@@ -199,27 +199,21 @@ object Sudoku {
 
   /** Return a solution to the puzzle (null if there is no solution). */
   def solve(board: Array[Array[Int]]): Array[Array[Int]] = {
-    if (isComplete(board))
-    {
-      if (isSolved(board))
-      {
+    val choices = getChoices(board)
+    if (isComplete(board)) {
+      if (isSolved(board)) {
         return board
       }
-      else
-      {
+      else {
         println(boardToString(board))
         return null
       }
     }
-    else
-    {
-      val parSeqA: ParSeq[Array[Array[Int]]] = ParSeq.fromSpecific(getChoices(board))
-      for (choice <- parSeqA)
-      {
-        lazy val result = solve(choice)
-        if (isSolved(result)) return result
+    else {
+      println(s"Parallel: ${countZeros(board)}")
+      choices.par.foreach {
+        choice => solve(choice)
       }
-      println(boardToString(board))
     }
     null
   }
@@ -230,10 +224,8 @@ object Sudoku {
     array.mkString("[", ", ", "]")
   }
 
-  def integerRemapExponential(from: Range, to: Range, d: Int): Int = {
-    val s = 1
-    (-1 * s * math.pow(math.abs(from.min - from.max - s),
-      (d - to.max) / (to.min - to.max)) + from.max + s).toInt
+  def countZeros(array: Array[Array[Int]]): Int = {
+    array.flatten.count(_.equals(0))
   }
 
   def main(args: Array[String]): Unit = {
