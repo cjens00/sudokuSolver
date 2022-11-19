@@ -184,9 +184,9 @@ object Sudoku {
       for (thisColumn <- board.indices) {
         val newBoard: Array[Array[Int]] = board.map(_.clone())
         if (newBoard(thisRow)(thisColumn) == 0) {
-          val row = Array.from(getRow(newBoard, thisRow))
-          val col = Array.from(getCol(newBoard, thisColumn))
-          val box = Array.from(getBox(newBoard, thisRow, thisColumn))
+          val row = getRow(newBoard, thisRow).clone
+          val col = getCol(newBoard, thisColumn).clone
+          val box = getBox(newBoard, thisRow, thisColumn).clone
           val validPredicate: Int => Boolean = v =>
             !row.contains(v) && !col.contains(v) && !box.contains(v)
           val validEntries = (1 to 9).filter(validPredicate)
@@ -231,7 +231,7 @@ object Sudoku {
   def main(args: Array[String]): Unit = {
     var board: Array[Array[Int]] = Array(Array())
     if (args.length.equals(1)) board = readBoard(args(0))
-    else board = readBoard("boards/sudokuShortz301.txt")
+    else board = readBoard("boards/sudoku1.txt")
     val sol = solve(board)
     println(boardToString(sol))
   }
