@@ -148,33 +148,6 @@ object Sudoku {
     board
   }
 
-  /** Return all possible new board configurations from the given one. */
-  //  def getChoices(board: Array[Array[Int]]): IndexedSeq[Array[Array[Int]]] = {
-  //    val choices: ArrayBuffer[Array[Array[Int]]] = ArrayBuffer()
-  //
-  //    for (thisRow <- board.indices) {
-  //      for (thisColumn <- board.indices) {
-  //        val newBoard: Array[Array[Int]] = board.map(_.clone())
-  ////        for {
-  ////          row <- board.indices
-  ////          col <- board.indices
-  ////        } {
-  ////          newBoard(row)(col) = board(row)(col).intValue
-  ////        }
-  //        if (newBoard(thisRow)(thisColumn) == 0) {
-  //          val row = Array.from(getRow(newBoard, thisRow))
-  //          val col = Array.from(getCol(newBoard, thisColumn))
-  //          val box = Array.from(getBox(newBoard, thisRow, thisColumn))
-  //          val validPredicate: Int => Boolean = v =>
-  //            !row.contains(v) && !col.contains(v) && !box.contains(v)
-  //          val validEntries = (1 to 9).filter(validPredicate)
-  //          validEntries.foreach(e => choices.append(getChoice(newBoard.map(_.clone()), thisRow, thisColumn, e)))
-  //        }
-  //      }
-  //    }
-  //    choices.toIndexedSeq
-  //  }
-
   def getChoices(board: Array[Array[Int]]): IndexedSeq[Array[Array[Int]]] = {
     if (isComplete(board)) {
       return IndexedSeq(board)
