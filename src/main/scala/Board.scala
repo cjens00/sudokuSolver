@@ -12,7 +12,7 @@ class Board {
   var rows: ArrayBuffer[ArrayBuffer[Int]] = ArrayBuffer()
 
   def fromExisting(b: Board): Board = {
-    this.rows = b.rows
+    this.rows = b.rows.clone()
     this
   }
 
