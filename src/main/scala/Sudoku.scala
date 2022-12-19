@@ -80,6 +80,11 @@ object Sudoku {
   }
 
   def getChoices(board: Board): IndexedSeq[Board] = {
+    val nextChoices = getNextChoicesFor(board)
+    nextChoices
+  }
+
+  def getNextChoicesFor(board: Board): IndexedSeq[Board] = {
     val choices = mutable.IndexedBuffer[Board]()
     val zeroIndices = mutable.IndexedBuffer[(Int, Int)]()
     val allElems = board.getElements()
@@ -92,19 +97,21 @@ object Sudoku {
             math.floorDiv(index, board.size),
             math.floorMod(index, board.size)))
     }
-    // Create all possible choices and append them to choices
-    val answers = mutable.IndexedBuffer[Int]()
-    for (i <- zeroIndices.indices) answers.append(-1)
-    // TODO: build & return the completed choices sequence or a subsequence thereof
-    //  that we can solve with recursion or (??)
-    ArrayBuffer(new Board()).toIndexedSeq
+    // Get markup for every zero index
+    val markedIndices = zeroIndices.map { rowCol =>
+      (rowCol._1, rowCol._2, getCellMarkup(board, rowCol._1, rowCol._2))
+    }
+    print("debug\n")
+    IndexedSeq()
   }
 
   /** Returns the Crook's algorithm markup for a given cell (valid values of x on [1, 9]) */
   def getCellMarkup(board: Board, row: Int, col: Int): IndexedSeq[Int] = {
-    val markup = mutable.IndexedBuffer[Int]()
-    markup.append(0).append(1)
-    markup.toIndexedSeq
+    (1 to 9).filter(v =>
+      !board.getBox(col, row).contains(v) &&
+        !board.getColumn(col).contains(v) &&
+        !board.getRow(row).contains(v)
+    )
   }
 
   /** Return a solution to the puzzle (null if there is no solution). */
